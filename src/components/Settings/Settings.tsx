@@ -8,6 +8,7 @@ const styles = {
     flexDirection: 'column'
   }
 } as const
+
 function Settings() {
   return (
     <div style={styles.wrapper}>

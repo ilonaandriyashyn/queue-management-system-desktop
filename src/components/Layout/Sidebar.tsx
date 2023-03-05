@@ -6,6 +6,9 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import { Drawer } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import { useAppDispatch } from '../../store/hooks'
+import { setPage } from '../../store/common/slice'
+import { Pages } from '../../helpers/consts'
 
 const styles = {
   drawer: {
@@ -15,18 +18,31 @@ const styles = {
   }
 }
 export default function Sidebar() {
+  const dispatch = useAppDispatch()
+
+  const handlePageRedirect = (page: Pages) => {
+    dispatch(setPage(page))
+  }
   return (
     <Drawer variant="permanent" open sx={styles.drawer}>
       <List>
         <ListItem key="dashboard" disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => {
+              handlePageRedirect(Pages.dashboard)
+            }}
+          >
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
           </ListItemButton>
         </ListItem>
         <ListItem key="settings" disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => {
+              handlePageRedirect(Pages.settings)
+            }}
+          >
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
