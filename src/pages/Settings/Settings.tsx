@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, TextField } from '@mui/material'
-import ServiceSelect from './ServiceSelect'
+import ServiceSelect from '../../components/Settings/ServiceSelect'
 
 const styles = {
   wrapper: {
