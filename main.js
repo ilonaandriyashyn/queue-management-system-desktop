@@ -9,8 +9,10 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true
+      // preload: path.join(app.getAppPath(), 'preload.js')
+      // nodeIntegration: false,
+      // enableRemoteModule: false,
+      // contextIsolation: true
     }
   })
 
