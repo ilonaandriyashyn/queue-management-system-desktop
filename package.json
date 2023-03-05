@@ -1,0 +1,50 @@
+{
+  "name": "desktop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "description": "Queue managing desktop application",
+  "main": "./dist/main.js",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "compile-electron-main": "swc main.js -o ./dist/main.js",
+    "electron:dev": "npm run dev & npm run compile-electron-main && IS_IN_DEVELOPMENT=true electron-forge start",
+    "electron:build": "npm run build && npm run compile-electron-main && electron-forge make",
+    "electron:package": "electron-forge package",
+    "electron:make": "electron-forge make",
+    "lint": "eslint --ext .jsx,.js,.tsx,.ts src/ ./*.js --max-warnings=0 && tsc --noEmit",
+    "lint-fix": "eslint --ext .jsx,.js,.tsx,.ts src/ ./*.js --fix"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.5",
+    "@electron-forge/maker-deb": "^6.0.5",
+    "@electron-forge/maker-rpm": "^6.0.5",
+    "@electron-forge/maker-squirrel": "^6.0.5",
+    "@electron-forge/maker-zip": "^6.0.5",
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.37",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "electron": "^23.1.2",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "2.8.4",
+    "typescript": "*",
+    "vite": "^4.1.0"
+  }
+}
