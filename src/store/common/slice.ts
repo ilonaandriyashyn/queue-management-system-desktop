@@ -1,21 +1,21 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../index'
-import { Pages } from '../../helpers/consts'
+import { PAGES, type PagesType } from '../../helpers/consts'
 
 interface CommonState {
-  page: Pages
+  page: PagesType
 }
 
 const initialState: CommonState = {
-  page: Pages.dashboard
+  page: PAGES.DASHBOARD.name
 }
 
 export const commonSlice = createSlice({
   name: 'common',
   initialState,
   reducers: {
-    setPage: (state, action: PayloadAction<Pages>) => {
+    setPage: (state, action: PayloadAction<PagesType>) => {
       state.page = action.payload
     }
   }

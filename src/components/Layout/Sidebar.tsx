@@ -4,50 +4,42 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import { Drawer } from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings'
-import DashboardIcon from '@mui/icons-material/Dashboard'
-import { useAppDispatch } from '../../store/hooks'
-import { setPage } from '../../store/common/slice'
-import { Pages } from '../../helpers/consts'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { selectPage, setPage } from '../../store/common/slice'
+import { PAGES, type PagesType } from '../../helpers/consts'
 
 const styles = {
   drawer: {
     '& .MuiDrawer-paper': {
       width: 58
     }
+  },
+  selected: {
+    backgroundColor: 'grey.300'
   }
 }
 export default function Sidebar() {
   const dispatch = useAppDispatch()
+  const pageSelected = useAppSelector(selectPage)
 
-  const handlePageRedirect = (page: Pages) => {
+  const handlePageRedirect = (page: PagesType) => {
     dispatch(setPage(page))
   }
+
   return (
     <Drawer variant="permanent" open sx={styles.drawer}>
       <List>
-        <ListItem key="dashboard" disablePadding>
-          <ListItemButton
-            onClick={() => {
-              handlePageRedirect(Pages.dashboard)
-            }}
-          >
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
-        <ListItem key="settings" disablePadding>
-          <ListItemButton
-            onClick={() => {
-              handlePageRedirect(Pages.settings)
-            }}
-          >
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
+        {Object.values(PAGES).map((page) => (
+          <ListItem key={page.name} disablePadding sx={pageSelected === page.name ? styles.selected : {}}>
+            <ListItemButton
+              onClick={() => {
+                handlePageRedirect(page.name)
+              }}
+            >
+              <ListItemIcon>{page.icon}</ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Drawer>
   )
