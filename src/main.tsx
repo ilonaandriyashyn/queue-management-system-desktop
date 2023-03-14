@@ -10,14 +10,19 @@ import theme from './helpers/theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 )
