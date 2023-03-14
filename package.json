@@ -6,7 +6,7 @@
   "description": "Queue managing desktop application",
   "main": "./dist/main.js",
   "scripts": {
-    "dev": "vite --port 3000",
+    "dev": "vite --port 3001",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "compile-electron-main": "swc main.js -o ./dist/main.js",

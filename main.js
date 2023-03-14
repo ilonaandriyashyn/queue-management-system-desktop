@@ -19,7 +19,7 @@ function createWindow() {
   if (IS_DEV) {
     // If we are in development mode we load content from localhost server - vite
     // and open the developer tools
-    win.loadURL('http://localhost:3000')
+    win.loadURL('http://localhost:3001')
     win.webContents.openDevTools()
   } else {
     // In all other cases, load the index.html file from the dist folder
