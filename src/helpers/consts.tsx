@@ -14,3 +14,5 @@ export const PAGES = {
 } as const
 
 export type PagesType = (typeof PAGES)[keyof typeof PAGES]['name']
+
+export const COUNTER_ID = '007fc838-53cd-4e5a-8acd-7afeb5e77c97'
