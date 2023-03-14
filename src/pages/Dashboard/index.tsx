@@ -29,7 +29,7 @@ function Dashboard() {
   // TODO this is logged 6 times after some mutation
   console.log(ticket)
   const mutationDoneTicket = useMutation('done_ticket', doneTicket, { onSuccess: setTicket })
-  const mutationNextTicket = useMutation('next_ticket', nextTicket)
+  const mutationNextTicket = useMutation('next_ticket', nextTicket, { onSuccess: setTicket })
 
   const handleDone = () => {
     mutationDoneTicket.mutate()
