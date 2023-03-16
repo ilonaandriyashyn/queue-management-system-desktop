@@ -1,15 +1,6 @@
 import { axiosInstance } from '../config/axios'
 import { API_URL } from '../helpers/consts'
-import { z } from 'zod'
-
-const servicesSchema = z.array(
-  z.object({
-    id: z.string().uuid(),
-    name: z.string()
-  })
-)
-
-export type Services = z.infer<typeof servicesSchema>
+import { servicesSchema } from '../types'
 
 export const getCurrentOfficesServices = async () => {
   try {

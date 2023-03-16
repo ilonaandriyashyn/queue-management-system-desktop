@@ -6,9 +6,7 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select'
 import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Chip from '@mui/material/Chip'
-import { useState } from 'react'
-import { getCurrentOfficesServices, type Services } from '../../requests/office'
-import { useQuery } from 'react-query'
+import { type Services } from '../../types'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -35,9 +33,13 @@ const ServiceSelect = ({
   onChange
 }: {
   services: Services
-  servicesSelected: Services
+  servicesSelected: string[]
   onChange: (event: SelectChangeEvent<typeof servicesSelected>) => void
 }) => {
+  const getServiceName = (serviceId: string) => {
+    return services.find((s) => s.id === serviceId)?.name ?? ''
+  }
+
   return (
     <FormControl fullWidth>
       <InputLabel id="service-label">Služba</InputLabel>
@@ -51,14 +53,14 @@ const ServiceSelect = ({
         renderValue={(selected) => (
           <Box sx={styles.chipWrapper}>
             {selected.map((value) => (
-              <Chip key={value.id} label={value.name} />
+              <Chip key={value} label={getServiceName(value)} />
             ))}
           </Box>
         )}
         MenuProps={MenuProps}
       >
         {services.map((service) => (
-          <MenuItem key={service.id} value={service}>
+          <MenuItem key={service.id} value={service.id}>
             {service.name}
           </MenuItem>
         ))}

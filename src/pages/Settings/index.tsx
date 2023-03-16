@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import ServiceSelect from '../../components/Settings/ServiceSelect'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { selectCounterName, updateCounter } from '../../store/counter/slice'
-import { getCurrentOfficesServices, type Services } from '../../requests/office'
+import { selectCounter, selectCounterServices, updateCounter, updateServices } from '../../store/counter/slice'
+import { getCurrentOfficesServices } from '../../requests/office'
 import { useMutation, useQuery } from 'react-query'
 import { type SelectChangeEvent } from '@mui/material/Select'
-import { createCounter } from '../../requests/counters'
+import { createCounter, updateCounterServices } from '../../requests/counters'
+import { type Services } from '../../types'
 
 const styles = {
   wrapper: {
@@ -20,35 +21,52 @@ const styles = {
 
 function Settings() {
   const dispatch = useAppDispatch()
-  const counterName = useAppSelector(selectCounterName)
-  const [counter, setCounter] = useState<string>(counterName ?? '')
+  const counter = useAppSelector(selectCounter)
+  const [counterName, setCounterName] = useState<string>(counter.name)
 
   const [services, setServices] = useState<Services>([])
-  const [servicesSelected, setServicesSelected] = useState<Services>([])
+  const counterServices = useAppSelector(selectCounterServices).map((s) => s.id)
+  const [servicesSelected, setServicesSelected] = useState<string[]>(counterServices)
   useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
 
   const mutationUpdateCounter = useMutation('update_counter', createCounter, {
     onError: () => {
-      setCounter(counterName ?? '')
+      setCounterName(counter.name)
     },
     onSuccess: (response) => {
       dispatch(updateCounter(response))
+      mutationUpdateCounterServices.mutate({ counterId: response.id, services: servicesSelected })
+    }
+  })
+
+  const mutationUpdateCounterServices = useMutation('update_counter_services', updateCounterServices, {
+    onError: () => {
+      setServicesSelected(counterServices)
+    },
+    onSuccess: (response) => {
+      dispatch(updateServices(response))
     }
   })
 
   const handleCounterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCounter(event.target.value)
+    setCounterName(event.target.value)
   }
 
-  const handleServiceChange = (event: SelectChangeEvent<typeof servicesSelected>) => {
+  const handleServiceChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value }
     } = event
-    setServicesSelected(value)
+    setServicesSelected(typeof value === 'string' ? value.split(',') : value)
   }
 
   const handleSave = () => {
-    mutationUpdateCounter.mutate(counter)
+    if (counterName !== counter.name) {
+      mutationUpdateCounter.mutate(counterName)
+      return
+    }
+    if (counter.name !== '') {
+      mutationUpdateCounterServices.mutate({ counterId: counter.id, services: servicesSelected })
+    }
   }
 
   return (
@@ -57,7 +75,7 @@ function Settings() {
       <TextField
         id="standard-number"
         label="Přepážka"
-        value={counter}
+        value={counterName}
         onChange={handleCounterChange}
         variant="outlined"
         sx={styles.counterInput}
