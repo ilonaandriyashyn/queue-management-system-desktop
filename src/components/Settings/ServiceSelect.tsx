@@ -6,6 +6,9 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select'
 import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Chip from '@mui/material/Chip'
+import { useState } from 'react'
+import { getCurrentOfficesServices, type Services } from '../../requests/office'
+import { useQuery } from 'react-query'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -26,37 +29,16 @@ const styles = {
   }
 }
 
-const serviceList = [
-  'service1',
-  'service2',
-  'service3',
-  'service4',
-  'service5',
-  'service6',
-  'service7',
-  'service8',
-  'service9',
-  'service10',
-  'service11',
-  'service12',
-  'service13',
-  'service14',
-  'service15',
-  'service16',
-  'service17',
-  'service18',
-  'service19',
-  'service20',
-  'service21'
-]
 const ServiceSelect = () => {
-  const [services, setServices] = React.useState<string[]>([])
+  const [services, setServices] = useState<Services>([])
+  const [servicesSelected, setServicesSelected] = useState<Services>([])
+  useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
 
-  const handleChange = (event: SelectChangeEvent<typeof services>) => {
+  const handleChange = (event: SelectChangeEvent<typeof servicesSelected>) => {
     const {
       target: { value }
     } = event
-    setServices(typeof value === 'string' ? value.split(',') : value)
+    setServicesSelected(value)
   }
 
   return (
@@ -65,22 +47,22 @@ const ServiceSelect = () => {
       <Select
         multiple
         labelId="service-label"
-        value={services}
+        value={servicesSelected}
         label="Služba"
         onChange={handleChange}
         input={<OutlinedInput />}
         renderValue={(selected) => (
           <Box sx={styles.chipWrapper}>
             {selected.map((value) => (
-              <Chip key={value} label={value} />
+              <Chip key={value.id} label={value.name} />
             ))}
           </Box>
         )}
         MenuProps={MenuProps}
       >
-        {serviceList.map((serviceItem) => (
-          <MenuItem key={serviceItem} value={serviceItem}>
-            {serviceItem}
+        {services.map((service) => (
+          <MenuItem key={service.id} value={service}>
+            {service.name}
           </MenuItem>
         ))}
       </Select>
