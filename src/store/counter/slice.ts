@@ -20,7 +20,6 @@ export const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    // TODO when updating counter with already selected services, call
     updateCounter: (state, action: PayloadAction<Counter>) => {
       state.counter = action.payload
     },
@@ -33,6 +32,7 @@ export const counterSlice = createSlice({
 export const { updateCounter, updateServices } = counterSlice.actions
 
 export const selectCounter = (state: RootState) => state.counter.counter
+export const selectCounterId = (state: RootState) => state.counter.counter.id
 export const selectCounterServices = (state: RootState) => state.counter.services
 
 export default counterSlice.reducer

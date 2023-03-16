@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Button, Typography } from '@mui/material'
 import { useMutation, useQuery } from 'react-query'
-import { doneTicket, getCurrentTicket, nextTicket, type Ticket } from '../../requests'
+import { doneTicket, getCurrentTicket, nextTicket, type Ticket } from '../../requests/tickets'
 import { TicketState } from '../../helpers/consts'
+import { useAppSelector } from '../../store/hooks'
+import { selectCounterId, selectCounterServices } from '../../store/counter/slice'
 
 const styles = {
   wrapper: {
@@ -22,9 +24,15 @@ const styles = {
 } as const
 
 function Dashboard() {
+  const counterId = useAppSelector(selectCounterId)
+  const counterServices = useAppSelector(selectCounterServices)
+
   // TODO why I receive empty string instead of null
   const [ticket, setTicket] = useState<Ticket>(null)
-  useQuery('current_ticket', getCurrentTicket, { onSuccess: setTicket })
+  useQuery('current_ticket', async () => await getCurrentTicket(counterId), {
+    onSuccess: setTicket,
+    enabled: counterId !== '' && counterServices.length !== 0
+  })
 
   // TODO this is logged 6 times after some mutation
   console.log(ticket)
