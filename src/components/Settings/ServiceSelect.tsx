@@ -29,18 +29,15 @@ const styles = {
   }
 }
 
-const ServiceSelect = () => {
-  const [services, setServices] = useState<Services>([])
-  const [servicesSelected, setServicesSelected] = useState<Services>([])
-  useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
-
-  const handleChange = (event: SelectChangeEvent<typeof servicesSelected>) => {
-    const {
-      target: { value }
-    } = event
-    setServicesSelected(value)
-  }
-
+const ServiceSelect = ({
+  services,
+  servicesSelected,
+  onChange
+}: {
+  services: Services
+  servicesSelected: Services
+  onChange: (event: SelectChangeEvent<typeof servicesSelected>) => void
+}) => {
   return (
     <FormControl fullWidth>
       <InputLabel id="service-label">Služba</InputLabel>
@@ -49,7 +46,7 @@ const ServiceSelect = () => {
         labelId="service-label"
         value={servicesSelected}
         label="Služba"
-        onChange={handleChange}
+        onChange={onChange}
         input={<OutlinedInput />}
         renderValue={(selected) => (
           <Box sx={styles.chipWrapper}>

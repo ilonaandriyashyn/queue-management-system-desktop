@@ -24,7 +24,8 @@ export const COUNTER_ID = '007fc838-53cd-4e5a-8acd-7afeb5e77c97'
 
 export const API_URL = {
   TICKET: `/counters/${COUNTER_ID}/tickets`,
-  OFFICE: `/offices/${OFFICE_ID}`
+  OFFICE: `/offices/${OFFICE_ID}`,
+  COUNTER: '/counters'
 }
 
 export enum TicketState {
