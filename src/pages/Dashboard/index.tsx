@@ -40,11 +40,11 @@ function Dashboard() {
   const mutationNextTicket = useMutation('next_ticket', nextTicket, { onSuccess: setTicket })
 
   const handleDone = () => {
-    mutationDoneTicket.mutate()
+    mutationDoneTicket.mutate(counterId)
   }
 
   const handleNext = () => {
-    mutationNextTicket.mutate()
+    mutationNextTicket.mutate(counterId)
   }
 
   return (

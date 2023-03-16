@@ -34,9 +34,9 @@ export const getCurrentTicket = async (counterId: string) => {
   }
 }
 
-export const doneTicket = async () => {
+export const doneTicket = async (counterId: string) => {
   try {
-    await axiosInstance.put(`${API_URL.TICKET}/done`)
+    await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/done`)
     return null
   } catch (e) {
     // TODO save error to redux
@@ -44,9 +44,9 @@ export const doneTicket = async () => {
   }
 }
 
-export const nextTicket = async () => {
+export const nextTicket = async (counterId: string) => {
   try {
-    const response = await axiosInstance.put(`${API_URL.TICKET}/next`)
+    const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
     const parsedResponse = ticketSchema.safeParse(response.data)
     if (!parsedResponse.success) {
       // TODO save error state to redux
