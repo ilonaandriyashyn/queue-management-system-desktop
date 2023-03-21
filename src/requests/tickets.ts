@@ -13,35 +13,25 @@ export type CurrentTicket = z.infer<typeof currentTicketSchema>
 export type Tickets = z.infer<typeof ticketsSchema>
 
 export const getCurrentTicket = async (counterId: string) => {
-  try {
-    const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
-    const parsedResponse = currentTicketSchema.safeParse(response.data)
-    if (!parsedResponse.success) {
-      const e = generateError(parsedResponse.error)
-      console.error(e.message)
-      return null
-    }
-    return parsedResponse.data
-  } catch (e) {
-    console.error(e)
-    return null
+  const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
+  const parsedResponse = currentTicketSchema.safeParse(response.data)
+  if (!parsedResponse.success) {
+    const e = generateError(parsedResponse.error)
+    console.error(e.message)
+    throw e
   }
+  return parsedResponse.data
 }
 
 export const getCreatedTickets = async (counterId: string) => {
-  try {
-    const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/created`)
-    const parsedResponse = ticketsSchema.safeParse(response.data)
-    if (!parsedResponse.success) {
-      const e = generateError(parsedResponse.error)
-      console.error(e.message)
-      return []
-    }
-    return parsedResponse.data
-  } catch (e) {
-    console.error(e)
-    return []
+  const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/created`)
+  const parsedResponse = ticketsSchema.safeParse(response.data)
+  if (!parsedResponse.success) {
+    const e = generateError(parsedResponse.error)
+    console.error(e.message)
+    throw e
   }
+  return parsedResponse.data
 }
 
 export const doneTicket = async (counterId: string) => {
@@ -50,22 +40,17 @@ export const doneTicket = async (counterId: string) => {
     return null
   } catch (e) {
     console.error(e)
-    return null
+    throw e
   }
 }
 
 export const nextTicket = async (counterId: string) => {
-  try {
-    const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
-    const parsedResponse = ticketSchema.safeParse(response.data)
-    if (!parsedResponse.success) {
-      const e = generateError(parsedResponse.error)
-      console.error(e.message)
-      return null
-    }
-    return parsedResponse.data
-  } catch (e) {
-    console.error(e)
-    return null
+  const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
+  const parsedResponse = ticketSchema.safeParse(response.data)
+  if (!parsedResponse.success) {
+    const e = generateError(parsedResponse.error)
+    console.error(e.message)
+    throw e
   }
+  return parsedResponse.data
 }

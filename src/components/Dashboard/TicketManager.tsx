@@ -36,8 +36,16 @@ const TicketManager = () => {
     enabled: counterId !== '' && counterServices.length !== 0
   })
 
-  const mutationDoneTicket = useMutation('done_ticket', doneTicket, { onSuccess: setTicket })
-  const mutationNextTicket = useMutation('next_ticket', nextTicket, { onSuccess: setTicket })
+  const mutationDoneTicket = useMutation('done_ticket', doneTicket, {
+    onSuccess: (data) => {
+      setTicket(data)
+    }
+  })
+  const mutationNextTicket = useMutation('next_ticket', nextTicket, {
+    onSuccess: (data) => {
+      setTicket(data)
+    }
+  })
 
   const handleDone = () => {
     mutationDoneTicket.mutate(counterId)
