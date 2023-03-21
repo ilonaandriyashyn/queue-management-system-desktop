@@ -13,7 +13,14 @@ import { store } from './store'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { socket, WebsocketProvider } from './contexts/WebsocketContext'
 
-const queryClient = new QueryClient()
+// Consider enabling in production
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    }
+  }
+})
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
