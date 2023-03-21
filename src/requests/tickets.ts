@@ -14,7 +14,7 @@ export type Tickets = z.infer<typeof ticketsSchema>
 // TODO why request retries 3 times and only then returns failure?
 export const getCurrentTicket = async (counterId: string) => {
   try {
-    const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/current`)
+    const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
     const parsedResponse = currentTicketSchema.safeParse(response.data)
     if (!parsedResponse.success) {
       // TODO save error state to redux
