@@ -1,28 +1,21 @@
 import { axiosInstance } from '../config/axios'
-import { API_URL, TicketState } from '../helpers/consts'
+import { API_URL } from '../helpers/consts'
+import { ticketSchema } from '../types'
 import { z } from 'zod'
 
-const ticketSchema = z.nullable(
-  z.object({
-    dateCreated: z.string().datetime({ offset: true }),
-    id: z.string().uuid(),
-    phoneId: z.string(),
-    service: z.object({
-      id: z.string().uuid(),
-      name: z.string()
-    }),
-    // TODO find a better way
-    state: z.enum([TicketState.CREATED, TicketState.PROCESSING])
-  })
-)
+const currentTicketSchema = z.nullable(ticketSchema)
 
-export type Ticket = z.infer<typeof ticketSchema>
+const ticketsSchema = z.array(ticketSchema)
+
+export type CurrentTicket = z.infer<typeof currentTicketSchema>
+
+export type Tickets = z.infer<typeof ticketsSchema>
 
 // TODO why request retries 3 times and only then returns failure?
 export const getCurrentTicket = async (counterId: string) => {
   try {
     const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/current`)
-    const parsedResponse = ticketSchema.safeParse(response.data)
+    const parsedResponse = currentTicketSchema.safeParse(response.data)
     if (!parsedResponse.success) {
       // TODO save error state to redux
       return null
@@ -31,6 +24,21 @@ export const getCurrentTicket = async (counterId: string) => {
   } catch (e) {
     // TODO save error to redux
     return null
+  }
+}
+
+export const getCreatedTickets = async (counterId: string) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/created`)
+    const parsedResponse = ticketsSchema.safeParse(response.data)
+    if (!parsedResponse.success) {
+      // TODO save error state to redux
+      return []
+    }
+    return parsedResponse.data
+  } catch (e) {
+    // TODO save error to redux
+    return []
   }
 }
 
