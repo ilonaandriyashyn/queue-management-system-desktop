@@ -10,7 +10,8 @@ const styles = {
   wrapper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    minHeight: '172px'
   },
   buttonsWrapper: {
     display: 'flex',
@@ -29,7 +30,7 @@ const TicketManager = () => {
 
   // TODO why I receive empty string instead of null
   const [ticket, setTicket] = useState<CurrentTicket>(null)
-  useQuery('current_ticket', async () => await getCurrentTicket(counterId), {
+  useQuery('get_current_ticket', async () => await getCurrentTicket(counterId), {
     onSuccess: setTicket,
     enabled: counterId !== '' && counterServices.length !== 0
   })
