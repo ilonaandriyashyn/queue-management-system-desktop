@@ -28,15 +28,14 @@ const TicketManager = () => {
   const counterId = useAppSelector(selectCounterId)
   const counterServices = useAppSelector(selectCounterServices)
 
-  // TODO why I receive empty string instead of null
-  const [ticket, setTicket] = useState<CurrentTicket>(null)
+  const [ticket, setTicket] = useState<CurrentTicket | null>(null)
   useQuery('get_current_ticket', async () => await getCurrentTicket(counterId), {
-    onSuccess: setTicket,
+    onSuccess: (data) => {
+      setTicket(data)
+    },
     enabled: counterId !== '' && counterServices.length !== 0
   })
 
-  // TODO this is logged 6 times after some mutation
-  console.log(ticket)
   const mutationDoneTicket = useMutation('done_ticket', doneTicket, { onSuccess: setTicket })
   const mutationNextTicket = useMutation('next_ticket', nextTicket, { onSuccess: setTicket })
 
