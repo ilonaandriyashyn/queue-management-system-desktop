@@ -2,6 +2,7 @@ import { axiosInstance } from '../config/axios'
 import { API_URL } from '../helpers/consts'
 import { ticketSchema } from '../types'
 import { z } from 'zod'
+import { generateError } from 'zod-error'
 
 const currentTicketSchema = z.nullable(ticketSchema)
 
@@ -11,18 +12,18 @@ export type CurrentTicket = z.infer<typeof currentTicketSchema>
 
 export type Tickets = z.infer<typeof ticketsSchema>
 
-// TODO why request retries 3 times and only then returns failure?
 export const getCurrentTicket = async (counterId: string) => {
   try {
     const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
     const parsedResponse = currentTicketSchema.safeParse(response.data)
     if (!parsedResponse.success) {
-      // TODO save error state to redux
+      const e = generateError(parsedResponse.error)
+      console.error(e.message)
       return null
     }
     return parsedResponse.data
   } catch (e) {
-    // TODO save error to redux
+    console.error(e)
     return null
   }
 }
@@ -32,12 +33,13 @@ export const getCreatedTickets = async (counterId: string) => {
     const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/created`)
     const parsedResponse = ticketsSchema.safeParse(response.data)
     if (!parsedResponse.success) {
-      // TODO save error state to redux
+      const e = generateError(parsedResponse.error)
+      console.error(e.message)
       return []
     }
     return parsedResponse.data
   } catch (e) {
-    // TODO save error to redux
+    console.error(e)
     return []
   }
 }
@@ -47,7 +49,7 @@ export const doneTicket = async (counterId: string) => {
     await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/done`)
     return null
   } catch (e) {
-    // TODO save error to redux
+    console.error(e)
     return null
   }
 }
@@ -57,12 +59,13 @@ export const nextTicket = async (counterId: string) => {
     const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
     const parsedResponse = ticketSchema.safeParse(response.data)
     if (!parsedResponse.success) {
-      // TODO save error state to redux
+      const e = generateError(parsedResponse.error)
+      console.error(e.message)
       return null
     }
     return parsedResponse.data
   } catch (e) {
-    // TODO save error to redux
+    console.error(e)
     return null
   }
 }
