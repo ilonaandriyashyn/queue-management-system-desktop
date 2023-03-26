@@ -72,7 +72,11 @@ const TicketManager = () => {
         >
           {'Vyřízeno'}
         </Button>
-        <Button disabled={ticket?.state === TicketState.PROCESSING} variant="contained" onClick={handleNext}>
+        <Button
+          disabled={ticket?.state === TicketState.PROCESSING || counterId === '' || counterServices.length === 0}
+          variant="contained"
+          onClick={handleNext}
+        >
           {'Další'}
         </Button>
       </div>
