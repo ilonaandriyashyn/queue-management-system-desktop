@@ -4,7 +4,7 @@ import { ticketSchema } from '../types'
 import { z } from 'zod'
 import { generateError } from 'zod-error'
 
-const currentTicketSchema = z.nullable(ticketSchema)
+const currentTicketSchema = z.preprocess((data) => (data === '' ? null : data), z.nullable(ticketSchema))
 
 const ticketsSchema = z.array(ticketSchema)
 
