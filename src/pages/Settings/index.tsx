@@ -16,6 +16,10 @@ const styles = {
   },
   counterInput: {
     mb: 2
+  },
+  saveButton: {
+    width: 'max-content',
+    mt: 2
   }
 } as const
 
@@ -73,7 +77,6 @@ function Settings() {
     <div style={styles.wrapper}>
       {/* TODO we will probably persist counter in store */}
       <TextField
-        id="standard-number"
         label="Přepážka"
         value={counterName}
         onChange={handleCounterChange}
@@ -81,7 +84,7 @@ function Settings() {
         sx={styles.counterInput}
       />
       <ServiceSelect services={services} servicesSelected={servicesSelected} onChange={handleServiceChange} />
-      <Button onClick={handleSave} variant="contained">
+      <Button sx={styles.saveButton} onClick={handleSave} variant="contained">
         {'Uložit'}
       </Button>
     </div>
