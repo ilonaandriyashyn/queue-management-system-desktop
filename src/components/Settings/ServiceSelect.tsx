@@ -27,6 +27,8 @@ const styles = {
   }
 }
 
+const label = 'Služba'
+
 const ServiceSelect = ({
   services,
   servicesSelected,
@@ -42,14 +44,14 @@ const ServiceSelect = ({
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="service-label">Služba</InputLabel>
+      <InputLabel id="service-label">{label}</InputLabel>
       <Select
         multiple
         labelId="service-label"
         value={servicesSelected}
-        label="Služba"
+        label={label}
         onChange={onChange}
-        input={<OutlinedInput />}
+        input={<OutlinedInput label={label} />}
         renderValue={(selected) => (
           <Box sx={styles.chipWrapper}>
             {selected.map((value) => (
