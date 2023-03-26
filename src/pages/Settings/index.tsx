@@ -8,6 +8,7 @@ import { useMutation, useQuery } from 'react-query'
 import { type SelectChangeEvent } from '@mui/material/Select'
 import { createCounter, updateCounterServices } from '../../requests/counters'
 import { type Services } from '../../types'
+import { useSnackbar } from 'notistack'
 
 const styles = {
   wrapper: {
@@ -33,22 +34,28 @@ function Settings() {
   const [servicesSelected, setServicesSelected] = useState<string[]>(counterServices)
   useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
 
+  const { enqueueSnackbar } = useSnackbar()
+
   const mutationUpdateCounter = useMutation('update_counter', createCounter, {
     onError: () => {
       setCounterName(counter.name)
+      enqueueSnackbar('Could not update counter', { variant: 'error' })
     },
     onSuccess: (response) => {
       dispatch(updateCounter(response))
       mutationUpdateCounterServices.mutate({ counterId: response.id, services: servicesSelected })
+      enqueueSnackbar('Successfully updated counter', { variant: 'success' })
     }
   })
 
   const mutationUpdateCounterServices = useMutation('update_counter_services', updateCounterServices, {
     onError: () => {
       setServicesSelected(counterServices)
+      enqueueSnackbar('Could not update services', { variant: 'error' })
     },
     onSuccess: (response) => {
       dispatch(updateServices(response))
+      enqueueSnackbar('Successfully updated services', { variant: 'success' })
     }
   })
 

@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { socket, WebsocketProvider } from './contexts/WebsocketContext'
+import { SnackbarProvider } from 'notistack'
 
 // Consider enabling in production
 const queryClient = new QueryClient({
@@ -28,8 +29,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App />
+            <SnackbarProvider>
+              <CssBaseline />
+              <App />
+            </SnackbarProvider>
           </ThemeProvider>
         </Provider>
       </QueryClientProvider>
