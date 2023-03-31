@@ -77,7 +77,7 @@ const Table = () => {
       <TableBody>
         {tickets.map((ticket) => (
           <TableRow key={ticket.id} sx={styles.row}>
-            <TableCell>{ticket.id}</TableCell>
+            <TableCell>{ticket.ticketNumber}</TableCell>
             <TableCell>{ticket.service.name}</TableCell>
           </TableRow>
         ))}

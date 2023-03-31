@@ -59,7 +59,7 @@ const TicketManager = () => {
     <div style={styles.wrapper}>
       <div>
         <Typography variant="h5">{'Aktuální číslo'}</Typography>
-        <Typography variant="h3">{ticket == null ? '- - -' : ticket.id}</Typography>
+        <Typography variant="h3">{ticket == null ? '- - -' : ticket.ticketNumber}</Typography>
         {ticket !== null && <Typography variant="body1">{`Požadovaná služba: ${ticket.service.name}`}</Typography>}
       </div>
       <div style={styles.buttonsWrapper}>
