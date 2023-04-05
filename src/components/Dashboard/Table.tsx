@@ -11,6 +11,7 @@ import { OFFICE_ID, TicketState } from '../../helpers/consts'
 import { type Ticket, ticketSchema } from '../../types'
 import { useQuery } from 'react-query'
 import { getCreatedTickets } from '../../requests/tickets'
+import { z } from 'zod'
 
 const styles = {
   table: {
@@ -56,13 +57,22 @@ const Table = () => {
       })
     })
 
+    socket.on(`ON_DELETE_TICKETS/${OFFICE_ID}`, (data: unknown) => {
+      const parserResponse = z.array(ticketSchema).safeParse(data)
+      if (parserResponse.success) {
+        const tickets = parserResponse.data
+        setTickets((prevState) => {
+          // TODO check if this works
+          return prevState.filter((prevTicket) => !tickets.some((removedTicket) => prevTicket.id === removedTicket.id))
+        })
+      }
+    })
+
     return () => {
-      console.log('cleanup')
-      // TODO test behavior when I have some services and I'm subscribed. But then I choose no services, does this unmount?
-      // TODO probably yes because it unmounts when I go to settings page
       counterServices.forEach((service) => {
         socket.off(`ON_UPDATE_QUEUE/${OFFICE_ID}/${service.id}`)
       })
+      socket.off(`ON_DELETE_TICKETS/${OFFICE_ID}`)
     }
   }, [counterServices])
 
