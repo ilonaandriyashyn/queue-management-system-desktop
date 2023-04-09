@@ -39,23 +39,23 @@ function Settings() {
   const mutationUpdateCounter = useMutation('update_counter', createCounter, {
     onError: () => {
       setCounterName(counter.name)
-      enqueueSnackbar('Could not update counter', { variant: 'error' })
+      enqueueSnackbar('Nepovedlo se nastavit přepážku', { variant: 'error' })
     },
     onSuccess: (response) => {
       dispatch(updateCounter(response))
       mutationUpdateCounterServices.mutate({ counterId: response.id, services: servicesSelected })
-      enqueueSnackbar('Successfully updated counter', { variant: 'success' })
+      enqueueSnackbar('Nastavení přepážky proběhlo úspěšně', { variant: 'success' })
     }
   })
 
   const mutationUpdateCounterServices = useMutation('update_counter_services', updateCounterServices, {
     onError: () => {
       setServicesSelected(counterServices)
-      enqueueSnackbar('Could not update services', { variant: 'error' })
+      enqueueSnackbar('Nepovedlo se nastavit služby', { variant: 'error' })
     },
     onSuccess: (response) => {
       dispatch(updateServices(response))
-      enqueueSnackbar('Successfully updated services', { variant: 'success' })
+      enqueueSnackbar('Nastavení služeb proběhlo úspěšně', { variant: 'success' })
     }
   })
 
