@@ -13,14 +13,17 @@ import { useSnackbar } from 'notistack'
 const styles = {
   wrapper: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignSelf: 'center',
+    width: '80%'
   },
   counterInput: {
     mb: 2
   },
   saveButton: {
     width: 'max-content',
-    mt: 2
+    mt: 2,
+    alignSelf: 'center'
   }
 } as const
 
