@@ -24,7 +24,7 @@ const styles = {
   }
 } as const
 
-const TicketManager = () => {
+const TicketManager = ({ ticketsInQueueNum }: { ticketsInQueueNum: number }) => {
   const counterId = useAppSelector(selectCounterId)
   const counterServices = useAppSelector(selectCounterServices)
 
@@ -73,7 +73,12 @@ const TicketManager = () => {
           {'Vyřízeno'}
         </Button>
         <Button
-          disabled={ticket?.state === TicketState.PROCESSING || counterId === '' || counterServices.length === 0}
+          disabled={
+            ticketsInQueueNum === 0 ||
+            ticket?.state === TicketState.PROCESSING ||
+            counterId === '' ||
+            counterServices.length === 0
+          }
           variant="contained"
           onClick={handleNext}
         >

@@ -44,7 +44,7 @@ export const doneTicket = async (counterId: string) => {
 
 export const nextTicket = async (counterId: string) => {
   const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
-  const parsedResponse = ticketSchema.safeParse(response.data)
+  const parsedResponse = currentTicketSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)
     console.error(e.message)
