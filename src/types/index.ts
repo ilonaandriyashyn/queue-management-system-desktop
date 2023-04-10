@@ -8,7 +8,6 @@ export const serviceSchema = z.object({
 
 export const servicesSchema = z.array(serviceSchema)
 
-export type Service = z.infer<typeof serviceSchema>
 export type Services = z.infer<typeof servicesSchema>
 
 export const ticketSchema = z.object({
@@ -20,8 +19,7 @@ export const ticketSchema = z.object({
     id: z.string().uuid(),
     name: z.string()
   }),
-  // TODO find a better way
-  state: z.enum([TicketState.CREATED, TicketState.PROCESSING])
+  state: z.nativeEnum(TicketState)
 })
 
 export type Ticket = z.infer<typeof ticketSchema>
