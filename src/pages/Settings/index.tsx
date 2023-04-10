@@ -82,7 +82,6 @@ function Settings() {
 
   return (
     <div style={styles.wrapper}>
-      {/* TODO we will probably persist counter in store */}
       <TextField
         label="Přepážka"
         value={counterName}
