@@ -38,9 +38,24 @@ const Table = () => {
   })
 
   useEffect(() => {
+    socket.on(`ON_DELETE_TICKETS/${OFFICE_ID}`, (data: unknown) => {
+      const parserResponse = z.array(ticketSchema).safeParse(data)
+      if (parserResponse.success) {
+        const tickets = parserResponse.data
+        setTickets((prevState) => {
+          return prevState.filter((prevTicket) => !tickets.some((removedTicket) => prevTicket.id === removedTicket.id))
+        })
+      }
+    })
+
+    return () => {
+      socket.off(`ON_DELETE_TICKETS/${OFFICE_ID}`)
+    }
+  }, [])
+
+  useEffect(() => {
     counterServices.forEach((service) => {
       socket.on(`ON_UPDATE_QUEUE/${OFFICE_ID}/${service.id}`, (data: unknown) => {
-        console.log(service.id, data)
         const parserResponse = ticketSchema.safeParse(data)
         if (parserResponse.success) {
           const ticket = parserResponse.data
@@ -57,22 +72,10 @@ const Table = () => {
       })
     })
 
-    socket.on(`ON_DELETE_TICKETS/${OFFICE_ID}`, (data: unknown) => {
-      const parserResponse = z.array(ticketSchema).safeParse(data)
-      if (parserResponse.success) {
-        const tickets = parserResponse.data
-        setTickets((prevState) => {
-          // TODO check if this works
-          return prevState.filter((prevTicket) => !tickets.some((removedTicket) => prevTicket.id === removedTicket.id))
-        })
-      }
-    })
-
     return () => {
       counterServices.forEach((service) => {
         socket.off(`ON_UPDATE_QUEUE/${OFFICE_ID}/${service.id}`)
       })
-      socket.off(`ON_DELETE_TICKETS/${OFFICE_ID}`)
     }
   }, [counterServices])
 
