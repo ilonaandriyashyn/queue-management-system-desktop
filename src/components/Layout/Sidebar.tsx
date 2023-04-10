@@ -11,7 +11,8 @@ import { PAGES, type PagesType } from '../../helpers/consts'
 const styles = {
   drawer: {
     '& .MuiDrawer-paper': {
-      width: 58
+      width: 58,
+      overflow: 'hidden'
     }
   },
   selected: {
