@@ -9,6 +9,7 @@ import { type SelectChangeEvent } from '@mui/material/Select'
 import { createCounter, updateCounterServices } from '../../requests/counters'
 import { type Services } from '../../types'
 import { useSnackbar } from 'notistack'
+import { getCurrentTicket } from '../../requests/tickets'
 
 const styles = {
   wrapper: {
@@ -31,10 +32,10 @@ function Settings() {
   const dispatch = useAppDispatch()
   const counter = useAppSelector(selectCounter)
   const [counterName, setCounterName] = useState<string>(counter.name)
-
   const [services, setServices] = useState<Services>([])
   const counterServices = useAppSelector(selectCounterServices).map((s) => s.id)
   const [servicesSelected, setServicesSelected] = useState<string[]>(counterServices)
+
   useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
 
   const { enqueueSnackbar } = useSnackbar()
@@ -73,27 +74,45 @@ function Settings() {
     setServicesSelected(typeof value === 'string' ? value.split(',') : value)
   }
 
-  const handleSave = () => {
-    if (counterName !== counter.name) {
-      mutationUpdateCounter.mutate(counterName)
-      return
+  const { isLoading, isFetching, isError, data } = useQuery(
+    'get_current_ticket',
+    async () => await getCurrentTicket(counter.id),
+    {
+      enabled: counter.id !== '' && counterServices.length !== 0
     }
-    if (counter.name !== '') {
-      mutationUpdateCounterServices.mutate({ counterId: counter.id, services: servicesSelected })
+  )
+
+  const settingsDisabled = isLoading || isFetching || isError || (data !== null && data !== undefined)
+
+  const handleSave = () => {
+    if (!settingsDisabled) {
+      if (counterName !== counter.name) {
+        mutationUpdateCounter.mutate(counterName)
+        return
+      }
+      if (counter.name !== '') {
+        mutationUpdateCounterServices.mutate({ counterId: counter.id, services: servicesSelected })
+      }
     }
   }
 
   return (
     <div style={styles.wrapper}>
       <TextField
+        disabled={settingsDisabled}
         label="Přepážka"
         value={counterName}
         onChange={handleCounterChange}
         variant="outlined"
         sx={styles.counterInput}
       />
-      <ServiceSelect services={services} servicesSelected={servicesSelected} onChange={handleServiceChange} />
-      <Button sx={styles.saveButton} onClick={handleSave} variant="contained">
+      <ServiceSelect
+        disabled={settingsDisabled}
+        services={services}
+        servicesSelected={servicesSelected}
+        onChange={handleServiceChange}
+      />
+      <Button disabled={settingsDisabled} sx={styles.saveButton} onClick={handleSave} variant="contained">
         {'Uložit'}
       </Button>
     </div>

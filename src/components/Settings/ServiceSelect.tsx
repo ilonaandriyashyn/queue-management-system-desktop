@@ -32,18 +32,20 @@ const label = 'Služba'
 const ServiceSelect = ({
   services,
   servicesSelected,
-  onChange
+  onChange,
+  disabled
 }: {
   services: Services
   servicesSelected: string[]
   onChange: (event: SelectChangeEvent<typeof servicesSelected>) => void
+  disabled: boolean
 }) => {
   const getServiceName = (serviceId: string) => {
     return services.find((s) => s.id === serviceId)?.name ?? ''
   }
 
   return (
-    <FormControl fullWidth>
+    <FormControl disabled={disabled} fullWidth>
       <InputLabel id="service-label">{label}</InputLabel>
       <Select
         multiple
