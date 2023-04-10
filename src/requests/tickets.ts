@@ -10,8 +10,6 @@ const ticketsSchema = z.array(ticketSchema)
 
 export type CurrentTicket = z.infer<typeof currentTicketSchema>
 
-export type Tickets = z.infer<typeof ticketsSchema>
-
 export const getCurrentTicket = async (counterId: string) => {
   const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
   const parsedResponse = currentTicketSchema.safeParse(response.data)
