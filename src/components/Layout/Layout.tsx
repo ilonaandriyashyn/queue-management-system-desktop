@@ -10,9 +10,6 @@ const styles = {
     marginLeft: '5rem',
     display: 'flex',
     flexDirection: 'column'
-  },
-  name: {
-    alignSelf: 'flex-end'
   }
 } as const
 
@@ -20,10 +17,7 @@ function Layout({ children }: PropsWithChildren) {
   return (
     <div style={styles.wrapper}>
       <Sidebar />
-      <div style={styles.content}>
-        <div style={styles.name}>{'My Name'}</div>
-        <div>{children}</div>
-      </div>
+      <div style={styles.content}>{children}</div>
     </div>
   )
 }
