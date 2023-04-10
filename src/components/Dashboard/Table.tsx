@@ -19,7 +19,7 @@ const styles = {
 const Table = ({ tickets }: { tickets: Ticket[] }) => {
   return (
     <div style={styles.wrapper}>
-      <Typography variant="h6">{'Aktuální fronta'}</Typography>
+      <Typography variant="h6">{'Fronta:'}</Typography>
       <MuiTable>
         <TableHead>
           <TableRow>

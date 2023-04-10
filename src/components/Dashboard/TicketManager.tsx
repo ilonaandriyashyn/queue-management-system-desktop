@@ -10,16 +10,16 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    minHeight: '172px'
+    minHeight: '172px',
+    alignItems: 'center'
   },
   buttonsWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'space-around'
   },
   doneButton: {
-    mb: 1
+    mb: 6
   }
 } as const
 
