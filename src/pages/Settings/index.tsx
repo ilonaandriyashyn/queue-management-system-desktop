@@ -10,6 +10,7 @@ import { createCounter, updateCounterServices } from '../../requests/counters'
 import { type Services } from '../../types'
 import { useSnackbar } from 'notistack'
 import { getCurrentTicket } from '../../requests/tickets'
+import TicketProcessingAlert from '../../components/TicketProcessingAlert'
 
 const styles = {
   wrapper: {
@@ -17,6 +18,9 @@ const styles = {
     flexDirection: 'column',
     alignSelf: 'center',
     width: '80%'
+  },
+  alert: {
+    marginBottom: 32
   },
   counterInput: {
     mb: 2
@@ -98,6 +102,7 @@ function Settings() {
 
   return (
     <div style={styles.wrapper}>
+      <div style={styles.alert}>{settingsDisabled && <TicketProcessingAlert />}</div>
       <TextField
         disabled={settingsDisabled}
         label="Přepážka"
