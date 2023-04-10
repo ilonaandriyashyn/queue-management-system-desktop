@@ -6,7 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import { Drawer } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectPage, setPage } from '../../store/common/slice'
-import { PAGES, type PagesType } from '../../helpers/consts'
+import { PAGES } from '../../helpers/consts'
 
 const styles = {
   drawer: {
@@ -23,10 +23,6 @@ export default function Sidebar() {
   const dispatch = useAppDispatch()
   const pageSelected = useAppSelector(selectPage)
 
-  const handlePageRedirect = (page: PagesType) => {
-    dispatch(setPage(page))
-  }
-
   return (
     <Drawer variant="permanent" open sx={styles.drawer}>
       <List>
@@ -34,7 +30,7 @@ export default function Sidebar() {
           <ListItem key={page.name} disablePadding sx={pageSelected === page.name ? styles.selected : {}}>
             <ListItemButton
               onClick={() => {
-                handlePageRedirect(page.name)
+                dispatch(setPage(page.name))
               }}
             >
               <ListItemIcon>{page.icon}</ListItemIcon>
