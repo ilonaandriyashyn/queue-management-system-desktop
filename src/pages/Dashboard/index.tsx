@@ -56,7 +56,7 @@ function Dashboard() {
 
   useEffect(() => {
     services.forEach((service) => {
-      socket.on(`ON_UPDATE_QUEUE/${OFFICE_ID}/${service.id}`, (data: unknown) => {
+      socket.on(`ON_UPDATE_QUEUE/${service.id}`, (data: unknown) => {
         const parserResponse = ticketSchema.safeParse(data)
         if (parserResponse.success) {
           const ticket = parserResponse.data
@@ -75,7 +75,7 @@ function Dashboard() {
 
     return () => {
       services.forEach((service) => {
-        socket.off(`ON_UPDATE_QUEUE/${OFFICE_ID}/${service.id}`)
+        socket.off(`ON_UPDATE_QUEUE/${service.id}`)
       })
     }
   }, [services])
