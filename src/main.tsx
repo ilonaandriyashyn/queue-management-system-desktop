@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { SnackbarProvider } from 'notistack'
-import ConfigBoundary from './components/ConfigBoundary'
+import { OfficeProvider } from './contexts/OfficeContext'
 
 // Consider enabling in production
 const queryClient = new QueryClient({
@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ConfigBoundary>
+    <OfficeProvider>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <SnackbarProvider>
@@ -32,6 +32,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           </SnackbarProvider>
         </Provider>
       </QueryClientProvider>
-    </ConfigBoundary>
+    </OfficeProvider>
   </React.StrictMode>
 )
