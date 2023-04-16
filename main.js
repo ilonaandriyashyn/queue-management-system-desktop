@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
+import fs from 'fs'
 import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer'
 
 const IS_DEV = process.env.IS_IN_DEVELOPMENT || false
@@ -10,11 +11,31 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
+      preload: path.join(app.getAppPath(), 'preload.js')
       // preload: path.join(app.getAppPath(), 'preload.js')
       // nodeIntegration: false,
       // enableRemoteModule: false,
       // contextIsolation: true
     }
+  })
+
+  ipcMain.handle('getOfficeId', () => {
+    let fileName = ''
+    // TODO
+    if (process.platform === 'win32') {
+      fileName = '%PROGRAMDATA%\\queue-system.json'
+    } else if (process.platform === 'darwin' || process.platform === 'linux') {
+      fileName = '/etc/queue-system.json'
+    }
+    if (fileName === '') {
+      throw new Error()
+    }
+    const data = fs.readFileSync(fileName, 'utf8')
+    const content = JSON.parse(data)
+    if (Object.hasOwn(content, 'OFFICE_ID')) {
+      return content.OFFICE_ID
+    }
+    throw new Error()
   })
 
   if (IS_DEV) {

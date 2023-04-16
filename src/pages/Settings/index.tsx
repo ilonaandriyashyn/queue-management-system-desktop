@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import ServiceSelect from '../../components/Settings/ServiceSelect'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
@@ -11,6 +11,7 @@ import { type Services } from '../../types'
 import { useSnackbar } from 'notistack'
 import { getCurrentTicket } from '../../requests/tickets'
 import TicketProcessingAlert from '../../components/TicketProcessingAlert'
+import { OfficeContext } from '../../contexts/OfficeContext'
 
 const styles = {
   wrapper: {
@@ -33,6 +34,7 @@ const styles = {
 } as const
 
 function Settings() {
+  const officeId = useContext(OfficeContext).officeId
   const dispatch = useAppDispatch()
   const counter = useAppSelector(selectCounter)
   const [counterName, setCounterName] = useState<string>(counter.name)
@@ -40,7 +42,7 @@ function Settings() {
   const counterServices = useAppSelector(selectCounterServices).map((s) => s.id)
   const [servicesSelected, setServicesSelected] = useState<string[]>(counterServices)
 
-  useQuery('services', getCurrentOfficesServices, { onSuccess: setServices })
+  useQuery('services', async () => await getCurrentOfficesServices(officeId), { onSuccess: setServices })
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -91,7 +93,7 @@ function Settings() {
   const handleSave = () => {
     if (!settingsDisabled) {
       if (counterName !== counter.name) {
-        mutationUpdateCounter.mutate(counterName)
+        mutationUpdateCounter.mutate({ name: counterName, officeId })
         return
       }
       if (counter.name !== '') {

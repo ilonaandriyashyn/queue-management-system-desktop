@@ -8,9 +8,10 @@ import { WebsocketContext } from '../../contexts/WebsocketContext'
 import { type Ticket, ticketSchema } from '../../types'
 import { useMutation, useQuery } from 'react-query'
 import { type CurrentTicket, doneTicket, getCreatedTickets, getCurrentTicket, nextTicket } from '../../requests/tickets'
-import { OFFICE_ID, TicketState } from '../../helpers/consts'
+import { TicketState } from '../../helpers/consts'
 import { z } from 'zod'
 import NoTicketsInQueueAlert from '../../components/NoTicketsInQueueAlert'
+import { OfficeContext } from '../../contexts/OfficeContext'
 
 const styles = {
   wrapper: {
@@ -23,6 +24,7 @@ const styles = {
 } as const
 
 function Dashboard() {
+  const officeId = useContext(OfficeContext).officeId
   const counterId = useAppSelector(selectCounterId)
   const services = useAppSelector(selectCounterServices)
 
@@ -39,7 +41,7 @@ function Dashboard() {
   })
 
   useEffect(() => {
-    socket.on(`ON_DELETE_TICKETS/${OFFICE_ID}`, (data: unknown) => {
+    socket.on(`ON_DELETE_TICKETS/${officeId}`, (data: unknown) => {
       const parserResponse = z.array(ticketSchema).safeParse(data)
       if (parserResponse.success) {
         const tickets = parserResponse.data
@@ -50,7 +52,7 @@ function Dashboard() {
     })
 
     return () => {
-      socket.off(`ON_DELETE_TICKETS/${OFFICE_ID}`)
+      socket.off(`ON_DELETE_TICKETS/${officeId}`)
     }
   }, [])
 

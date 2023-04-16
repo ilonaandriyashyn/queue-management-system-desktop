@@ -1,5 +1,4 @@
 import { axiosInstance } from '../config/axios'
-import { API_URL } from '../helpers/consts'
 import { ticketSchema } from '../types'
 import { z } from 'zod'
 import { generateError } from 'zod-error'
@@ -11,7 +10,7 @@ const ticketsSchema = z.array(ticketSchema)
 export type CurrentTicket = z.infer<typeof currentTicketSchema>
 
 export const getCurrentTicket = async (counterId: string) => {
-  const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/current`)
+  const response = await axiosInstance.get(`/counters/${counterId}/tickets/current`)
   const parsedResponse = currentTicketSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)
@@ -22,7 +21,7 @@ export const getCurrentTicket = async (counterId: string) => {
 }
 
 export const getCreatedTickets = async (counterId: string) => {
-  const response = await axiosInstance.get(`${API_URL.COUNTER}/${counterId}/tickets/created`)
+  const response = await axiosInstance.get(`/counters/${counterId}/tickets/created`)
   const parsedResponse = ticketsSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)
@@ -34,7 +33,7 @@ export const getCreatedTickets = async (counterId: string) => {
 
 export const doneTicket = async (counterId: string) => {
   try {
-    await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/done`)
+    await axiosInstance.put(`/counters/${counterId}/tickets/done`)
     return null
   } catch (e) {
     console.error(e)
@@ -43,7 +42,7 @@ export const doneTicket = async (counterId: string) => {
 }
 
 export const nextTicket = async (counterId: string) => {
-  const response = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/tickets/next`)
+  const response = await axiosInstance.put(`/counters/${counterId}/tickets/next`)
   const parsedResponse = currentTicketSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)

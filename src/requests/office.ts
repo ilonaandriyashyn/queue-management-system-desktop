@@ -1,10 +1,9 @@
 import { axiosInstance } from '../config/axios'
-import { API_URL } from '../helpers/consts'
 import { servicesSchema } from '../types'
 import { generateError } from 'zod-error'
 
-export const getCurrentOfficesServices = async () => {
-  const response = await axiosInstance.get(`${API_URL.OFFICE}/services`)
+export const getCurrentOfficesServices = async (officeId: string) => {
+  const response = await axiosInstance.get(`/offices/${officeId}/services`)
   const parsedResponse = servicesSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)

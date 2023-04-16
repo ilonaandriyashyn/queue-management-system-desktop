@@ -1,5 +1,4 @@
 import { axiosInstance } from '../config/axios'
-import { API_URL, OFFICE_ID } from '../helpers/consts'
 import { z } from 'zod'
 import { servicesSchema } from '../types'
 import { generateError } from 'zod-error'
@@ -17,8 +16,8 @@ const counterWithServicesSchema = z.object({
 
 export type Counter = z.infer<typeof counterSchema>
 
-export const createCounter = async (name: string) => {
-  const response = await axiosInstance.post(`${API_URL.COUNTER}/create`, { name, officeId: OFFICE_ID })
+export const createCounter = async ({ name, officeId }: { name: string; officeId: string }) => {
+  const response = await axiosInstance.post(`/counters/create`, { name, officeId })
   const parsedResponse = counterSchema.safeParse(response.data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)
@@ -29,7 +28,7 @@ export const createCounter = async (name: string) => {
 }
 
 export const updateCounterServices = async ({ counterId, services }: { counterId: string; services: string[] }) => {
-  const { data } = await axiosInstance.put(`${API_URL.COUNTER}/${counterId}/services`, { services })
+  const { data } = await axiosInstance.put(`/counters/${counterId}/services`, { services })
   const parsedResponse = counterWithServicesSchema.safeParse(data)
   if (!parsedResponse.success) {
     const e = generateError(parsedResponse.error)
