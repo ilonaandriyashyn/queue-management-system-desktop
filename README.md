@@ -16,13 +16,32 @@ yarn install
 yarn run electron:dev
 ```
 
-## Other
-To build an app run the following command.
+## Build
+Run the following command to build the application for Linux and create
+distributable file. Fakeroot and dpkg packages need to be installed.
+
+Squirrel.windows You can only build the Squirrel.Windows target on a Windows machine or on a macOS /Linux machine with mono and wine installed
+Deb (linux) You can only build the deb target on Linux or macOS machines with the fakeroot and dpkg packages installed.
 
 ```bash
-yarn run electron:build
+yarn run electron:build-linux
 ```
 
+Run the following command to build the application for macOS and create
+distributable file.
+
+```bash
+yarn run electron:build-mac
+```
+
+Run the following command to build the application for Windows and create
+distributable file. Mono and wine packages need to be installed.
+
+```bash
+yarn run electron:build-windows
+```
+
+## Other
 To lint the app run
 ```bash
 yarn run lint
