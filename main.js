@@ -21,9 +21,8 @@ function createWindow() {
 
   ipcMain.handle('getOfficeId', () => {
     let fileName = ''
-    // TODO
     if (process.platform === 'win32') {
-      fileName = '%PROGRAMDATA%\\queue-system.json'
+      fileName = `${process.env.PROGRAMDATA}\\queue-system.json`
     } else if (process.platform === 'darwin' || process.platform === 'linux') {
       fileName = '/etc/queue-system.json'
     }
