@@ -52,7 +52,7 @@ const TicketManager = ({
           onClick={onDoneTicket}
           sx={styles.doneButton}
         >
-          {'Vyřízeno'}
+          {'Klient vyřízen'}
         </Button>
         <Button
           disabled={
@@ -64,7 +64,7 @@ const TicketManager = ({
           variant="contained"
           onClick={onNextTicket}
         >
-          {'Další'}
+          {'Přivolat dalšího klienta'}
         </Button>
       </div>
     </div>
