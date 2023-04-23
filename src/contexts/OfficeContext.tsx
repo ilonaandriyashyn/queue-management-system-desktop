@@ -25,7 +25,7 @@ export const OfficeProvider = ({ children }: PropsWithChildren) => {
   ) : loadedId === '' ? (
     <div>
       {
-        'Nepovedlo se načíst konfigurace ze souboru. Zkuste prosím zkontrolovat konfigurační soubor, nebo znovu spustit aplikaci.'
+        'Nepovedlo se načíst konfigurace ze souboru. Zkuste prosím zkontrolovat konfigurační soubor a pro jeho opětovné načtení znovu spusťte aplikaci.'
       }
     </div>
   ) : (
