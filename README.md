@@ -17,6 +17,8 @@ yarn run electron:dev
 ```
 
 ## Build
+Beware that SERVER URL is localhost:3000. You can change it in **./helpers/consts.ts**.
+
 Run the following command to build the application for Linux and create
 distributable file. Fakeroot and dpkg packages need to be installed.
 
